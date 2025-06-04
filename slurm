@@ -12,11 +12,13 @@ def "main status" [] {
         | rename index count nodes
     ),
     "Nodes\ndown": (
-      sinfo -o "%100E %50H %50N"
+      let nodes = (sinfo -o "%100E %50H %50N"
         | from ssv
         | where reason != none
         | select NODELIST TIMESTAMP REASON
         | rename index time reason
+      );
+      if ($nodes | is-empty) { "all nodes up" } else { $nodes }
     ),
     "Queue": (
       squeue --noheader --format="%T"
