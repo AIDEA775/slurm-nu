@@ -111,11 +111,12 @@ def "main user update" [
   --default-qos: string
   --cluster: string
   ] {
-    if not $reset_qos
+    if (
+      not $reset_qos
       and ($add_qos | is-empty)
       and ($remove_qos | is-empty)
       and ($default_qos | is-empty)
-    {
+    ) {
       help main user update | print
       exit 1
     }
